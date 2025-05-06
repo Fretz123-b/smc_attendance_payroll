@@ -1,2 +1,1 @@
-# smc_attendance_payroll
-Final Project System
+# Career Development Project Portfolio
