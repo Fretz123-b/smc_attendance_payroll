@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Payroll</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #d4f1ff, #ffffff);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            padding: 15px 40px;
+            border-bottom: 1px solid #cccccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .navbar div {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        .btn {
+            background-color: #007BFF;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .content {
+            padding: 100px 30px 30px 30px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #007BFF;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .description {
+            background: #eaf6ff;
+            border-left: 4px solid #007BFF;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        select, input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        button[type="submit"] {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+            margin: 40px 0 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div>Generate Payroll</div>
+    <div>
+        <a href="{% url 'admin_dashboard' %}" class="btn">← Dashboard</a>
+    </div>
+</div>
+
+<div class="content">
+    <h1>Payroll Generation</h1>
+
+    <div class="description">
+        This feature will automatically compute employee payroll based on:
+        <ul>
+            <li>Attendance records (hours worked)</li>
+            <li>Pay rates assigned to each employee</li>
+            <li>Standard deductions (tax, SSS, PhilHealth)</li>
+            <li>Optional: Absences or unpaid leaves</li>
+        </ul>
+        Just select the payroll month and year, and the system will handle the rest.
+    </div>
+
+    <form method="GET" action="{% url 'view_payroll' %}">
+        <select name="month">
+            {% for m in months %}
+                <option value="{{ m }}" {% if m == current_month %}selected{% endif %}>{{ m }}</option>
+            {% endfor %}
+        </select>
+        <select name="year">
+            <option value="{{ current_year }}" {% if current_year == current_year %}selected{% endif %}>{{ current_year }}</option>
+        </select>
+        <button type="submit">View Payroll</button>
+    </form>
+    
+</div>
+
+</body>
+</html>

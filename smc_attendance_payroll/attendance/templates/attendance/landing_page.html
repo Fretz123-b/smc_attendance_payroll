@@ -1,0 +1,263 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SMC Attendance & Payroll System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #000;
+            color: #fff;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .logo {
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+        header .logo span {
+            color: #00bfff; 
+        }
+
+        .hero {
+            background: url("{% static 'attendance/background.jpg' %}") no-repeat center center/cover;
+            height: 300px;
+            color: #fff;
+            text-align: left;
+            padding: 98px 50px;
+            position: relative;
+        }
+
+        .hero h2 {
+            font-size: 36px;
+            max-width: 600px;
+            line-height: 1.3;
+        }
+
+        .hero strong {
+            display: block;
+            font-size: 48px;
+            margin-top: 10px;
+        }
+
+        .form-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 10px;
+            border-radius: 15px;
+            width: 400px;
+            box-shadow: 0 8px 20px rgba(0,1,1,3);
+            text-align: center;
+        }
+
+        .form-box h1 {
+            color: skyblue;
+            margin-bottom: 20px;
+            font-size: 40px;
+        }
+
+        .form-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .form-box button {
+            width: 100%;
+            background: #007bff; 
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .features {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 20px;
+            background: #f9f9f9;
+            text-align: center;
+        }
+
+        .feature {
+            width: 30%;
+        }
+
+        .feature img {
+            width: 150px;            
+            height: 150px;           
+            object-fit: cover;       
+            border-radius: 10px;
+            margin: 0 auto;          
+            display: block;          
+        }
+        .feature h3 {
+            margin: 15px 0 10px;
+            color: #007bff; 
+        }
+
+        .section {
+            padding: 60px 30px;
+            text-align: center;
+        }
+
+        .columns {
+            display: flex;
+            justify-content: center;
+            gap: 5px; 
+            margin-top: 30px;
+        }
+
+        .column {
+            width: 15%; 
+        }
+
+
+        .column img {
+            width: 60px;
+            margin-bottom: 15px;
+        }
+
+        .section button {
+            margin-top: 30px;
+            padding: 12px 25px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        footer {
+            background: #000;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+        .features, .columns {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .feature, .column {
+            width: 80%;
+            margin-bottom: 30px;
+        }
+
+        .form-box {
+            position: static;
+            transform: none;
+            margin: 30px auto;
+            }
+        }
+       .logo {
+        display: flex;
+        align-items: center; 
+        gap: 10px; 
+        font-size: 30px;
+        font-weight: bold;
+      }
+       .logo img {
+        height: 80px;
+        text-align: center;
+       }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="{% static 'attendance/smc_logo.png' %}" alt="SMC Logo">
+        <span>SMC</span> Employee<span>Attendance</span> & <span>Payroll</span> Management
+    </div>    
+</header>
+
+<section class="hero">
+    <div class="form-box">
+        <h1>Welcome to SMC</h1>
+        <a href="{% url 'register' %}" style="
+            display: inline-block;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            background-color: whitesmoke;
+            color: black;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        ">Start your account</a>
+    </div>
+    
+</section>
+
+<section class="features">
+    <div class="feature">
+        <img src="{% static 'attendance/attendance.png' %}" alt="Attendance">
+        <h3>Record Attendance</h3>
+        <p>Employees can quickly log their daily attendance through a user-friendly interface — no paperwork, no hassle.</p>
+    </div>
+    <div class="feature">
+        <img src="{% static 'attendance/leave.png' %}" alt="Requests">
+        <h3>Submit Requests</h3>
+        <p>Submit leave or correction requests in seconds and track their approval status in real-time.</p>
+    </div>
+    <div class="feature">
+        <img src="{% static 'attendance/payroll.png' %}" alt="Payroll">
+        <h3>Access Payroll</h3>
+        <p>Instantly view detailed payroll records including deductions, bonuses, and net pay — all in one place.</p>
+    </div>
+</section>
+
+<section class="section">
+    <h2>About SMC Attendance & Payroll</h2>
+    <p>SMC's system is designed to streamline employee time tracking and salary management. With integrated features and a clean dashboard, staff can focus more on work and less on paperwork.</p>
+    <div class="columns">
+        <div class="column">
+            <img src="{% static 'attendance/login.png' %}" alt="Reliable Logging">
+            <p>Reliable Time Logging</p>
+        </div>
+        <div class="column">
+            <img src="{% static 'attendance/monitor.png' %}" alt="Monitoring">
+            <p>Real-Time Request Monitoring</p>
+        </div>
+        <div class="column">
+            <img src="{% static 'attendance/documents.png' %}" alt="Payroll">
+            <p>Clear Payroll Summaries</p>
+        </div>
+    </div>
+</section>
+
+<section class="section" style="background: #f1f1f1;">    
+    <p>Whether you're checking in for work, requesting leave, or reviewing your monthly payslip, this system offers a smooth, secure, and modern platform built for smc employees.</p>
+    <a href="{% url 'login' %}">
+        <button>Log in Now</button>
+    </a>
+    </section>
+
+<footer>
+    <p>All Rights Reserved | © 2025 SMC Employee Attendance & Payroll System</p>
+</footer>
+
+</body>
+</html>

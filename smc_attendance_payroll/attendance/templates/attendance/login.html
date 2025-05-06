@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - SMC Attendance System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background-color: skyblue; 
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .popup-message {
+            position: relative;
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 15px;
+            background-color: #ffdddd;
+            color: #a94442;
+            border: 1px solid #f5c2c2;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        .popup-message.hide {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 80px auto;
+            background-color: #ffffff; 
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 50, 0.2); 
+        }
+
+        h2 {
+            text-align: center;
+            color: #007BFF;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 95%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF; 
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3; 
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .link a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+
+        .link a:hover {
+            text-decoration: underline;
+        }
+
+        .home-button {
+            display: block;
+            width: auto; 
+            padding: 12px 30px; 
+            background-color: blue; 
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 10px; 
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 0px auto 0 auto; 
+        }
+
+        .home-button:hover {
+            background-color: skyblue; 
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Login</h2>
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" required>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="link">
+            <p>No account yet? <a href="{% url 'register' %}">Register here</a></p>
+        </div>
+    </div>
+
+    <button class="home-button" onclick="window.location.href='/'">Go to Home Page</button>
+
+    <script>
+        setTimeout(function() {
+            var popup = document.getElementById('popupMessage');
+            if (popup) {
+                popup.classList.add('hide');
+            }
+        }, 3000);
+    </script>
+
+</body>
+</html>

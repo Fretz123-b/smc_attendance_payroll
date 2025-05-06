@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - SMC Attendance System</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #d4f1ff, #ffffff);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #ffffff;
+            padding: 15px 40px;
+            border-bottom: 1px solid #cccccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .navbar div {
+            font-size: 18px;
+            font-weight: bold;
+            color: #007BFF;
+        }
+
+        .logout-btn {
+            background-color: #007BFF;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .content {
+            padding: 100px 30px 30px 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: #007BFF;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .stat-card p {
+            font-size: 24px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .quick-actions {
+            margin-bottom: 40px;
+        }
+
+        .quick-actions h2 {
+            margin-bottom: 20px;
+            color: black;
+        }
+
+        .quick-actions a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 20px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .quick-actions a:hover {
+            background-color: #0056b3;
+        }
+
+        .overview-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .overview-section h3 {
+            color: #007BFF;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .overview-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .overview-section ul li {
+            padding: 6px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .overview-section ul li:last-child {
+            border-bottom: none;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+            margin: 40px 0 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div>Welcome, Admin</div>
+    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+</div>
+
+<div class="content">
+    <div class="stats">
+        <div class="stat-card">
+            <h3>Total Employees</h3>
+            <p>{{ employees.count }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Departments</h3>
+            <p>{{ departments.count }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Positions</h3>
+            <p>{{ positions.count }}</p>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <h2>Quick Actions:</h2>
+        <a href="{% url 'employee_list' %}">Manage Employees</a>
+        <a href="{% url 'department_list' %}">Manage Departments</a>
+        <a href="{% url 'position_list' %}">Manage Positions</a>
+        <a href="{% url 'holiday_list' %}">Manage Holidays</a>
+        <a href="{% url 'leave_list' %}">Review Leave Requests</a>
+        <a href="{% url 'generate_payroll' %}">Generate Payroll</a>
+    </div>
+
+    <div class="overview-section">
+        <h3>Employees:</h3>
+        <ul>
+            {% for employee in employees %}
+                <li>{{ employee.first_name }} {{ employee.last_name }}</li>
+            {% empty %}
+                <li>No employees found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="overview-section">
+        <h3>Departments:</h3>
+        <ul>
+            {% for department in departments %}
+                <li>{{ department.department_name }}</li>
+            {% empty %}
+                <li>No departments found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="overview-section">
+        <h3>Positions:</h3>
+        <ul>
+            {% for position in positions %}
+                <li>{{ position.name }}</li>
+            {% empty %}
+                <li>No positions found.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 SMC Employee & Attendance System</p>
+</footer>
+
+</body>
+</html>

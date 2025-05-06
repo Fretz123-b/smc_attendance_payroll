@@ -1,0 +1,23 @@
+<!-- delete_holiday.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Holiday</title>
+    <style>
+        /* Your styles here */
+    </style>
+</head>
+<body>
+    <h1>Delete Holiday</h1>
+
+    <p>Are you sure you want to delete the holiday on {{ holiday.date }}?</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Yes, Delete</button>
+    </form>
+
+    <a href="{% url 'holiday_list' %}">Cancel</a>
+</body>
+</html>

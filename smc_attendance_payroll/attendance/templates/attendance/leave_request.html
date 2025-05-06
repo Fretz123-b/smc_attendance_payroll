@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leave Request - SMC Attendance System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #d4f1ff, #ffffff);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .sidebar {
+        width: 240px;
+        height: 100vh;
+        background: #007BFF;
+        color: white;
+        position: fixed;
+        left: 0;
+        padding-top: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        }
+
+        .sidebar h5 {
+            font-size: 28px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar a {
+            display: block;
+            width: 80%;
+            padding: 12px;
+            margin: 10px 0;
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                top: 0;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 10px 0;
+            }
+        }
+        .content {
+            margin-left: 220px;
+            padding: 20px;
+        }
+
+        .navbar {
+            background-color: #ffffff; 
+            padding: 15px 40px;
+            margin-top: -20px;
+            border-bottom: 1px solid #cccccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            top: 0;
+        }
+
+        .logout-btn {
+            background-color: #333333;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .logout-btn:hover {
+            background-color: #555555;
+        }
+
+        .card {
+            background-color: white;
+            margin: 30px auto;
+            max-width: 600px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .card h2 {
+            margin-bottom: 20px;
+            color: #007BFF;
+        }
+
+        input, textarea {
+            width: 96%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 96%;
+            background-color: #007BFF;
+            color: white;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .table {
+            width: 100%;
+            margin-top: 30px;
+            margin-left: 30px;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            border: 1px solid #cccccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .table th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h5>SMC System</h5>
+        <a href="{% url 'attendance' %}">Record Attendance</a>
+        <a href="{% url 'leave_request' %}">Leave Request</a>
+        <a href="{% url 'view_payroll' %}">Payroll</a>
+    </div>
+
+    <div class="content">
+        <div class="navbar">
+            <div>Welcome, <strong>{{ request.user.get_full_name }}</strong></div>
+            <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+        </div>
+
+        <div class="card">
+            <h2>Submit Leave Request</h2>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                    <label for="start_date" style="width: 100px; font-family: 'Comic Sans MS', cursive; font-size: 13px; color: #000000;">Start Date:</label>
+                    <input type="date" name="start_date" id="start_date" required>
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                    <label for="end_date" style="width: 100px; font-family: 'Comic Sans MS', cursive; font-size: 13px; color: #000000;">End Date:</label>
+                    <input type="date" name="end_date" id="end_date" required>
+                </div>
+                <textarea name="reason" rows="4" placeholder="Reason for Leave" required></textarea>
+                <button type="submit">Submit Request</button>
+            </form>            
+        </div>
+
+        <h3 class="text-center" style="color: black; margin-left: 30px;
+">Your Leave Requests:</h3>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in leave_requests %}
+                <tr>
+                    <td>{{ leave.start_date }}</td>
+                    <td>{{ leave.end_date }}</td>
+                    <td>{{ leave.reason }}</td>
+                    <td>{{ leave.status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{% url 'dashboard' %}" class="back-link">← Back to Dashboard</a>
+
+    </div>
+
+</body>
+</html>

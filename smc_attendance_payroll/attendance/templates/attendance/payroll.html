@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payroll - SMC Attendance System</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #d4f1ff, #ffffff);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            background: #007BFF;
+            color: white;
+            position: fixed;
+            left: 0;
+            padding-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar h5 {
+            font-size: 28px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar a {
+            display: block;
+            width: 80%;
+            padding: 12px;
+            margin: 10px 0;
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 30px;
+        }
+
+        .navbar {
+            background-color: #ffffff; 
+            padding: 15px 40px;
+            margin-top: -20px;
+            border-bottom: 1px solid #cccccc;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            top: 0;
+        }
+
+        .logout-btn {
+            background-color: #333333;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .logout-btn:hover {
+            background-color: #555555;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            color: #007BFF;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        select, input[type="number"], button {
+            padding: 8px 12px;
+            font-size: 14px;
+            margin: 0 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #aaa;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .note {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            font-size: 16px;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+
+            .content {
+                margin-left: 200px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                top: 0;
+                flex-direction: row;
+                justify-content: space-around;
+                padding: 10px 0;
+            }
+
+            .content {
+                margin-left: 0;
+            }
+        }
+        .deductions-list {
+            margin: 10px 0 30px 0;
+            padding-left: 20px;
+        }
+
+        .deductions-list li {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h5>SMC System</h5>
+        <a href="{% url 'attendance' %}">Record Attendance</a>
+        <a href="{% url 'leave_request' %}">Leave Request</a>
+        <a href="{% url 'view_payroll' %}">Payroll</a>
+    </div>
+
+    <div class="content">
+        <div class="navbar">
+            <div>Welcome, <strong>{{ request.user.get_full_name }}</strong></div>
+            <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+        </div>
+
+        <h2>Your Payroll Summary</h2>
+
+        <form method="GET">
+            <label for="month">Month:</label>
+            <select name="month" required>
+                {% for m in months %}
+                    <option value="{{ m }}" {% if m|stringformat:"i" == request.GET.month %}selected{% endif %}>{{ m }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="year">Year:</label>
+            <input type="number" name="year" value="{{ request.GET.year|default:current_year }}" required>
+
+            <button type="submit">View Payroll</button>
+        </form>
+
+        {% if payrolls %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pay Period</th>
+                        <th>Gross Salary</th>
+                        <th>Total Deductions</th>
+                        <th>Net Salary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payroll in payrolls %}
+                    <tr>
+                        <td>{{ payroll.pay_period|date:"F Y" }}</td>
+                        <td>₱{{ payroll.gross_salary|floatformat:2 }}</td>
+                        <td>₱{{ payroll.total_deductions|floatformat:2 }}</td>
+                        <td><strong>₱{{ payroll.net_salary|floatformat:2 }}</strong></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <strong>Deductions:</strong>
+                            <ul class="deductions-list">
+                                {% for deduction in payroll.deductions_set.all %}
+                                    <li>{{ deduction.label }}: ₱{{ deduction.salary_deduction|floatformat:2 }}</li>
+                                {% empty %}
+                                    <li>No deductions recorded.</li>
+                                {% endfor %}
+                            </ul>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No payroll data available for the selected period.</p>
+        {% endif %}
+
+        <p class="note">Note: Payroll is automatically generated based on attendance, position, and deductions.</p>
+        <a href="{% url 'dashboard' %}" class="back-link">← Back to Dashboard</a>
+    </div>
+</body>
+</html>
